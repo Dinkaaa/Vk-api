@@ -11,15 +11,14 @@ class Authorization extends Component {
         let params = window.location.hash;
         this.props.onLogin(params);
     }
-
     render() {
-        console.log('props', this.props);
+        console.log('Auth', this.props)
         return (
             <div>
-                
-                {(!this.props.isLogin.loggedIn) ?
+
+                {(!this.props.isLogin) ?
                     <div>
-                        {this.props.isLogin.error ? <div>
+                        {(this.props.error !== null) ? <div>
                             <div className="alert alert-danger" role="alert">
                                 Ошибка доступа.<Link to="/login" className="btn">Попробуйте еще раз</Link>
                             </div>

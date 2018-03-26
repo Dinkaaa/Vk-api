@@ -15,6 +15,7 @@ async function getUserInfo(id) {
             let data = json.response[0];
 
             if (data.error) return data.error;
+            
 
             let userInfo = {
                 first_name: data.first_name,

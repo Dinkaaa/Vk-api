@@ -5,14 +5,15 @@ import { connect } from 'react-redux';
 import User from '../components/User';
 import Login from '../components/Login';
 import Authorization from '../components/Authorization';
+import { Map } from 'immutable';
 import { userActions } from '../actions/userActions';
 import { pageActions } from '../actions/pageActions';
 
 
-const PrivateRoute = ({ component: Component, isLogin, onLogout, onGetUser, userInfo, ...rest }) => (
+const PrivateRoute = ({ component: Component, isLogin, ...rest }) => (
   <Route {...rest} render={(props) => (
     isLogin === true
-      ? <Component {...props} onLogout={onLogout} onGetUser={onGetUser} userInfo={userInfo} />
+      ? <Component {...props} {...rest}/>
       : <Redirect to={{
         pathname: '/login',
         state: { from: props.location }
@@ -21,7 +22,9 @@ const PrivateRoute = ({ component: Component, isLogin, onLogout, onGetUser, user
 )
 
 class App extends Component {
+
   render() {
+    const state  = this.props;
     return (
       <div className='wrapp'>
         <header className="">
@@ -32,14 +35,16 @@ class App extends Component {
             <Route path='/login' component={Login} />
             <Route path='/auth' >
               <Authorization onLogin={this.props.onLogin}
-                isLogin={this.props.user} />
+                isLogin={state.user.get('loggedIn')}
+                error={state.user.get('error')} />
             </Route>
             <PrivateRoute exact path='/'
               component={User}
-              isLogin={this.props.user.loggedIn}
-              onLogout={this.props.onLogout}
-              onGetUser={this.props.onGetUserInfo}
-              userInfo={this.props.page}
+              isLogin={state.user.get('loggedIn')}
+              onLogout={state.onLogout}
+              onGetUser={state.onGetUserInfo}
+              user={state.page.get('user')}
+              error={state.page.get('error')}
             />
           </Switch>
         </BrowserRouter>
@@ -49,8 +54,8 @@ class App extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    user: state.login,
-    page: state.page
+    user: state.get('login'),
+    page: state.get('page')
   }
 }
 
@@ -67,7 +72,7 @@ const mergeProps = (stateProps, dispatchProps) => {
       dispatch(userActions.logout());
     },
     onGetUserInfo: () => {
-      dispatch(pageActions.getUserInfo(user.user.user_id))
+      dispatch(pageActions.getUserInfo(user.get('user').user_id))
     }
   };
 };
