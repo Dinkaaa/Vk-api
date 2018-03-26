@@ -1,6 +1,6 @@
 import {
     LOGIN_SUCCESS,
-    LOGIN_FAIL,
+    LOGIN_FAILURE,
     LOGOUT
 } from '../constants/Login'
 
@@ -15,6 +15,11 @@ export default function login(state = initialState, action) {
                 loggedIn: true,
                 user: action.user
             };
+        case LOGIN_FAILURE:
+            return {
+                loggedIn: false,
+                error: action.user
+            }
         case LOGOUT:
             return {
                 loggedIn: false

@@ -5,11 +5,18 @@ export const userService = {
     logout
 };
 
-function login(user){
-    
-    localStorage.setItem('user', JSON.stringify(user));
+async function login(hash) {
+    let params = hash.split('&');
 
-    return user;
+    if (params[0].split('=')[0] == '#error') return await { error: true };
+
+    let user = {
+        token: params[0].split('=')[1],
+        user_id: params[2].split('=')[1]
+    }
+
+    localStorage.setItem('user', JSON.stringify(user));
+    return await user;
 }
 
 function logout() {

@@ -24,12 +24,15 @@ class App extends Component {
   render() {
     return (
       <div className='wrapp'>
+        <header className="">
+          <span>VK API</span>
+        </header>
         <BrowserRouter >
           <Switch>
             <Route path='/login' component={Login} />
             <Route path='/auth' >
               <Authorization onLogin={this.props.onLogin}
-                isLogin={this.props.user.loggedIn} />
+                isLogin={this.props.user} />
             </Route>
             <PrivateRoute exact path='/'
               component={User}

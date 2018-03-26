@@ -1,15 +1,15 @@
 import { userService } from '../services/user.servise';
-import { LOGIN_SUCCESS , LOGOUT } from '../constants/Login'
+import { LOGIN_SUCCESS ,LOGIN_FAILURE, LOGOUT } from '../constants/Login'
 
 
 
-const login = (user) => {
+const login = (hash) => {
 
   return dispatch => {
 
-    userService.login(user);
-    dispatch({ type: LOGIN_SUCCESS, user });
-
+    let user = userService.login(hash).then(user => {
+      (user.error) ? dispatch({ type: LOGIN_FAILURE, user }): dispatch({ type: LOGIN_SUCCESS, user }) ;
+    });
   };
 }
 

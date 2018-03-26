@@ -1,6 +1,5 @@
 export const CLIENT_ID = '6422039';
 export const REDIRECT_URI = 'http://localhost:8080/auth';
-//export const REDIRECT_URI = 'https://oauth.vk.com/blank.html '
 export const API_VERSION = '5.73';
 
 export const LOGIN_SUCCESS = 'USERS_LOGIN_SUCCESS';

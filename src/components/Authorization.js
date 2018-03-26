@@ -1,26 +1,33 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
-//import { userActions } from '../actions/userActions';
+import Loading from './Loading';
 
 class Authorization extends Component {
     constructor(props) {
         super(props);
     }
     componentDidMount() {
-        let params = window.location.href.split('&');
-        let user = {
-            token: params[0].split('=')[1],
-            user_id: params[2].split('=')[1]
-        }
-        this.props.onLogin(user);
+        let params = window.location.hash;
+        this.props.onLogin(params);
     }
 
     render() {
+        console.log('props', this.props);
         return (
             <div>
-                Authorization...
-                {this.props.isLogin ? <Redirect to='/' /> : null}
+                
+                {(!this.props.isLogin.loggedIn) ?
+                    <div>
+                        {this.props.isLogin.error ? <div>
+                            <div className="alert alert-danger" role="alert">
+                                Ошибка доступа.<Link to="/login" className="btn">Попробуйте еще раз</Link>
+                            </div>
+                        </div> : <Loading />}
+                    </div>
+                    : <Redirect to='/' />
+
+                }
             </div>
         )
     }
